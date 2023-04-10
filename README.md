@@ -56,24 +56,50 @@
 
     ![7](task1/screenshots/7.JPG)
 			
-	
-		
-		
-		
+
 ### Task 2
   * a)
 
-		*insert text*
+		Περιορισμός Pod σε 20% cpu και 256MB ram.
 	
-	![1](task2/1.JPG)
-	![2](task2/2.JPG)
+	![1](task2/screenshots/1.JPG)
 
-  * b)
+		Η εντολή που χρησιμποιώ για το autoscaling είναι: 
+		kubectl autoscale deployment flask-first --cpu-percent=80 --min=1 --max=8
+
+		Άρα συνεχίζοντας από την προηγούμενη άσκηση κάνουμε πάλι:
+		kubectl apply -f first.yaml
+		kubectl apply -f locust.yaml
+		kubectl autoscale deployment flask --cpu-percent=80 --min=1 --max=8
+		minikube ip
+
+	![2](task2/screenshots/2.JPG)
+
+		Βάζω 100 χρήστες και 1 ανα δευτερόλεπτο στο 1ο service.
 	
-		*insert text*
-			
-	![2](task1/2.JPG)	
-	
+	![3](task2/screenshots/3.JPG)
+	![4](task2/screenshots/4.JPG)
+
+		Ξεκινάω το benchmark και βλέπω ότι ο autoscaler σηκώνει κατευθείαν 3 extra replicas και έχει 4 pod
+		συνολικά με το κάθε ένα να έχει 250 RPS περίπου.
+
+	![5](task2/screenshots/5.JPG)
+	![6](task2/screenshots/6.JPG)
+
+		Συνεχίζει σηκώνοντας και ένα πέμπτο pod και φτάνει στα 1250RPS
+
+	![7](task2/screenshots/7.JPG)
+	![8](task2/screenshots/8.JPG)
+
+		Παρατηρώ ότι σηκώνει άλλα 3 replicas και πάει στα 8 συνολικά. Εκεί σταματάει να σηκώνει και άλλα
+		γύρω στα 1300 RPS. Θεωρητικά μπορούσε και με 6 pods να κάνει το service αλλά έτσι θα ήταν πολύ πιο πάνω από το 80% threshold που έχει. Εκεί σταματάει να δημιουργεί και άλλα Pods. 
+
+	![9](task2/screenshots/9.JPG)
+	![10](task2/screenshots/10.JPG)
+
+		Επομένως με τον autoscaler μπορούμε να έχουμε 1300RPS με 74% cpu utilization ενώ με το 1 Pod είχαμε
+		250RPS στο 100% cpu utilization
+
 ### Task 3
   * a)
 
