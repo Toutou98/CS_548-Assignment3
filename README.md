@@ -64,6 +64,9 @@
 	
 	![1](task2/screenshots/1.JPG)
 
+		Κάνω enable τον metrics-server:
+		minikube addons enable metrics-server
+
 		Η εντολή που χρησιμποιώ για το autoscaling είναι: 
 		kubectl autoscale deployment flask-first --cpu-percent=80 --min=1 --max=8
 
@@ -103,12 +106,29 @@
 ### Task 3
   * a)
 
-		*insert text*
+		Κάνω install το Helm με χρησιμοποιόντας τον choco windows package manager:
+		choco install kubernetes-helm
+
+		Έπειτα ακολουθόντας τις οδηγίες από το artifacthub.io :
+		1) helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+		2) helm repo update
+		3) helm install hy548-ingress ingress-nginx/ingress-nginx
 		
-	![1](task3/1.JPG)
-	![2](task3/2.JPG)
-	![3](task3/3.JPG)
-	![4](task3/4.JPG)
+	![1](task3/screenshots/1.JPG)
+
+		Η αλλαγή που πρέπει να κάνω στα YAMLs είναι να προσθέσω το:
+		ingressClassName: nginx
+
+	![2](task3/screenshots/2.JPG)
+
+		Μετά κάνω :
+		minikube tunnel
+		kubectl apply -f first.yaml
+		kubectl apply -f second.yaml
+
+	![3](task3/screenshots/3.JPG)
+
+		Βλέπουμε στο κάθε path το σωστό μήνυμα επομένως δουλεύει.
 
 
 ### Task 4
