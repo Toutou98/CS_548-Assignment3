@@ -73,7 +73,7 @@
 		Άρα συνεχίζοντας από την προηγούμενη άσκηση κάνουμε πάλι:
 		kubectl apply -f first.yaml
 		kubectl apply -f locust.yaml
-		kubectl autoscale deployment flask --cpu-percent=80 --min=1 --max=8
+		kubectl autoscale deployment flask-first --cpu-percent=80 --min=1 --max=8
 		minikube ip
 
 	![2](task2/screenshots/2.JPG)
@@ -134,25 +134,51 @@
 ### Task 4
   * a)
 
-		*insert text*
+		Άρχικά φτιάχνω το Helm chart:
+		helm create task4
 		
-	![1](task4/1.JPG)
-	
-  * b)
-	
-		*insert text*
-			
-	![2](task1/2.JPG)
-		
-  * c)
-	
-		*insert text*
-			
-	![3](task1/3.JPG)
+		Έπειτα κάνω τις εξής αλλαγές:
+		1) values.yaml
 
-  * d)
-	
-		*insert text*
-			
-	![3](task1/3.JPG)
+			Βάζω στο image αυτό που ανέβασα στο Dockerhub και να κάνει πάντα pull.
+			Αλλάζω το Port στο server από 80 σε 8080
+			Κάνω enable το ingress με className: "nginx" και προσθέτω το annotation.
+			Επίσης βγάζω τον host που μου είχε προσθέσει.
+			Βάζω στα resources cpu limit 250m που ζητάει η εκφώνηση.
+			Κάνω enable το autoscaling με min-max στα 1 έως 20 που ορίζει η εκφώνηση και προσθέτω στο
+			message το "this is the third service!"
 
+	![1](task4/screenshots/1.JPG)
+
+	![2](task4/screenshots/2.JPG)
+
+	![3](task4/screenshots/3.JPG)
+	
+	![4](task4/screenshots/4.JPG)
+
+		2) deployments.yaml
+			Προσθέτω το enviroment variable που θα έχει το message
+
+	![5](task4/screenshots/5.JPG)
+
+		3) service.yaml
+			Αλλάζω το targetPort
+
+	![6](task4/screenshots/6.JPG)
+
+		4) ingress.yaml
+			Αφαιρώ τις γραμμές που ήταν για τους hosts καθώς το έβγαλα και από το values.yaml
+
+		Επομένω μπορώ να τρέξω:
+		helm install third task4 --values task4/values.yaml
+
+		και όταν πάω στο 127.0.0.1/third βλέπω το message
+	
+	![7](task4/screenshots/7.JPG)
+	![8](task4/screenshots/8.JPG)
+	![9](task4/screenshots/9.JPG)
+
+		Επίσης θα μπορούσα αντί να δηλώσω τα replicates, limits κτλπ μέσα στο values.yaml να τα βάλω και σαν
+		command line args όταν κάνω το helm install π.χ με --set autoscaling.maxReplicates=20
+
+	
